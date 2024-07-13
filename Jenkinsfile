@@ -1,24 +1,24 @@
-pipeline{
-    agent{
-        docker{
+pipeline {
+    agent {
+        docker {
             image 'harshalbh/maven-harshalb-docker-agent:v1'
             args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
         }
     }
     stages{
         stage('Checkout') {
-            steps{
+            steps {
                 sh 'echo passed'
             }
         }
         stage('Build and Test') {
-            steps{
+            steps {
                 sh 'ls -ltr'
                 sh 'cd spring-boot-app && mvn clean package'
             }
         }
         stage('Static Code Analysis') {
-            environment{
+            environment {
                 SONAR_URL = 'http://3.88.14.47:9000'
             }
             steps{
@@ -57,6 +57,7 @@ pipeline{
                     git add spring-boot-app-manifests/deployment.yml
                     git commit -m "Update deployment image to version ${BUILD_NUMBER}"
                     git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
+                    '''
                 }
             }
         }
