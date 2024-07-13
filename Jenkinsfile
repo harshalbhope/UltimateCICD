@@ -1,27 +1,27 @@
-pipeline {
-    agent {
-        docker {
+pipeline{
+    agent{
+        docker{
             image 'harshalbh/maven-harshalb-docker-agent:v1'
             args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
         }
     }
-    stages {
+    stages{
         stage('Checkout') {
-            steps {
+            steps{
                 sh 'echo passed'
             }
         }
         stage('Build and Test') {
-            steps {
+            steps{
                 sh 'ls -ltr'
                 sh 'cd spring-boot-app && mvn clean package'
             }
         }
         stage('Static Code Analysis') {
-            environment {
+            environment{
                 SONAR_URL = 'http://3.88.14.47:9000'
             }
-            steps {
+            steps{
                 withCredentials([string(credentialsId: 'SonarQube', variable: 'SONAR_AUTH_TOKEN')]){
                     sh 'cd spring-boot-app && sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=${SONAR_URL}'
                 }
@@ -32,7 +32,7 @@ pipeline {
                 DOCKER_IMAGE = "harshalbh/ultimate-cicd:${BUILD_NUMBER}"
                 REGISTRY_CREDENTIALS = credentials('docker-cred')
             }
-            steps {
+            steps{
                 script {
                     sh 'cd spring-boot-app && docker build -t ${DOCKER_IMAGE} .'
                     def dockerImage = docker.image("${DOCKER_IMAGE}")
