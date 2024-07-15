@@ -6,7 +6,7 @@ pipeline {
         }
     }
     stages {
-       
+        
         stage('Build and Test') {
             steps {
                 sh 'ls -ltr'
@@ -40,7 +40,7 @@ pipeline {
         }
         stage('Update Deployment File') {
             environment {
-                GIT_REPO_NAME = 'UltimateCICD'
+                GIT_REPO_NAME = 'UltimateCI_CD'
                 GIT_USER_NAME = 'harshalbhope'
             }
             steps {
