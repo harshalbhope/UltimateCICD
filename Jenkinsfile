@@ -5,12 +5,8 @@ pipeline {
             args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
         }
     }
-    stages{
-        stage('Checkout') {
-            steps {
-                sh 'echo passed'
-            }
-        }
+    stages {
+       
         stage('Build and Test') {
             steps {
                 sh 'ls -ltr'
